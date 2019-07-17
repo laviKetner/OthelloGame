@@ -39,6 +39,7 @@ namespace Ex02_Othelo
         private Player         m_Winner = null;
         private List<Piece>[,] m_ChangeTeamPieces;
         private Player.eTeam   m_Turn = Player.eTeam.Black;
+        private eDifficulty    m_Difficulty;
 
         public event AddedPieceOnBoardEventHandler PieceAddedOnBoard;
         public event CellsChangeTeamEventHandler   CellsChangedTeam;
@@ -79,9 +80,10 @@ namespace Ex02_Othelo
         //--------------------------------------------------------------------------------------//
         //                              Run Game - Constractur                                  //
         //--------------------------------------------------------------------------------------//
-        public OtheloGameLogic(byte i_BoardSize, string i_Player1Name, string i_Player2Name, bool i_IsPlayer2IsComputer)
+        public OtheloGameLogic(byte i_BoardSize, string i_Player1Name, string i_Player2Name, bool i_IsPlayer2IsComputer, eDifficulty i_Difficulty = eDifficulty.Empty_AgainstHuman)
         {
             const bool v_Player1IsAlwaysNotComputer = false;
+            m_Difficulty = i_Difficulty;
 
             m_GamePanel = new GamePanel(i_BoardSize);
             m_Player1 = new Player(i_Player1Name, v_Player1IsAlwaysNotComputer, Player.eTeam.Black);
@@ -364,28 +366,182 @@ namespace Ex02_Othelo
                 OnValidMovesChanges();
         }
 
-        private Coordinates getMaxPiecesToFlipCoordinate(ref short io_MaxPiecesToFlip)
+        private Coordinates getAIChoiceCoordinateAcoordingToDifficulty()
         {
-            Coordinates maxPiecesToFlipCoordinate = new Coordinates(0, 0);
-            List<Coordinates> maxListPiecesToFlipCoordinate = new List<Coordinates>();
+            Coordinates AIChosenCoordinate;
+
+            switch (m_Difficulty)
+            {
+                case eDifficulty.Easy:
+                    AIChosenCoordinate = getAIChoiceCoordinateInEasyDifficulty();
+                    break;
+
+                case eDifficulty.Medium:
+                    AIChosenCoordinate = getAIChoiceCoordinateInMediumDifficulty();
+                    break;
+
+                default: //eDifficulty == Hard:
+                    AIChosenCoordinate = getAIChoiceCoordinateInHardDifficulty();
+                    break;
+            }
+
+            return AIChosenCoordinate;
+        }
+
+        private Coordinates getAIChoiceCoordinateInHardDifficulty()
+        {
+            GamePanel tempGamePanel = m_GamePanel.ShallowClone();
+            Coordinates AIChosenCoordinate = new Coordinates(byte.MaxValue, byte.MaxValue);
+
+            float bestAIResult = float.MinValue;
 
             for (byte row = 0; row < m_GamePanel.Size; row++)
             {
                 for (byte column = 0; column < m_GamePanel.Size; column++)
                 {
-                    if (m_ChangeTeamPieces[row, column].Count > io_MaxPiecesToFlip)
+                    if (m_ChangeTeamPieces[row, column].Count != 0)
                     {
-                        io_MaxPiecesToFlip = (short)m_ChangeTeamPieces[row, column].Count;
-                        maxPiecesToFlipCoordinate = new Coordinates(row, column);
-                        maxListPiecesToFlipCoordinate.Add(maxPiecesToFlipCoordinate);
+                        Piece newOptionToLocatePiece = new Piece(Player.eTeam.White, new Coordinates(row, column));
+                        tempGamePanel.addTempPieceToBoard(newOptionToLocatePiece);
+
+                        foreach (Piece currentPieceToFlip in m_ChangeTeamPieces[row, column])
+                            tempGamePanel.addTempPieceToBoard(currentPieceToFlip);
+
+                        float currentAIResult = getAIResultForCurrentMove(tempGamePanel);
+
+                        if (m_Difficulty == eDifficulty.Hard)
+                        {
+                            if (bestAIResult < currentAIResult)
+                            {
+                                bestAIResult = currentAIResult;
+                                AIChosenCoordinate.X = row;
+                                AIChosenCoordinate.Y = column;
+                            }
+                        }
+
+                        tempGamePanel = m_GamePanel.ShallowClone();
                     }
                 }
             }
 
-            System.Random randomMaxCoordinate = new System.Random();
-            int randomMaxCoordinateLocation = randomMaxCoordinate.Next(0, maxListPiecesToFlipCoordinate.Count);
+            return AIChosenCoordinate;
+        }
 
-            return maxListPiecesToFlipCoordinate[randomMaxCoordinateLocation];
+        private Coordinates getAIChoiceCoordinateInEasyDifficulty()
+        {
+            Coordinates minPiecesToFlipCoordinate = new Coordinates(byte.MaxValue, byte.MaxValue);
+            int minPiecesToFlip = int.MaxValue;
+
+            for (byte row = 0; row < m_GamePanel.Size; row++)
+            {
+                for (byte column = 0; column < m_GamePanel.Size; column++)
+                {
+                    if (m_ChangeTeamPieces[row, column].Count > 0 && minPiecesToFlip >= m_ChangeTeamPieces[row, column].Count) 
+                    {
+                        minPiecesToFlip = m_ChangeTeamPieces[row, column].Count;
+                        minPiecesToFlipCoordinate = new Coordinates(row, column);
+                    }
+                }
+            }
+
+            return minPiecesToFlipCoordinate;
+        }
+
+        private Coordinates getAIChoiceCoordinateInMediumDifficulty()
+        {
+            Coordinates maxPiecesToFlipCoordinate = new Coordinates(byte.MaxValue, byte.MaxValue);
+            int maxPiecesToFlip = -1;
+
+            for (byte row = 0; row < m_GamePanel.Size; row++)
+            {
+                for (byte column = 0; column < m_GamePanel.Size; column++)
+                {
+                    if (m_ChangeTeamPieces[row, column].Count > maxPiecesToFlip)
+                    {
+                        maxPiecesToFlip = m_ChangeTeamPieces[row, column].Count;
+                        maxPiecesToFlipCoordinate = new Coordinates(row, column);
+                    }
+                }
+            }
+            
+            return maxPiecesToFlipCoordinate;
+        }
+
+        private float getAIResultForCurrentMove(GamePanel i_TempGamePanel)
+        {
+            float[,] boardScore = getScoreBoard();
+
+            float AICurrentResult = 0;
+            Coordinates AIChosenCoordinate = new Coordinates(byte.MaxValue, byte.MaxValue);
+
+            for (byte row = 0; row < m_GamePanel.Size; row++)
+            {
+                for (byte column = 0; column < m_GamePanel.Size; column++)
+                {
+                    AIChosenCoordinate.X = row;
+                    AIChosenCoordinate.Y = column;
+
+                    if (i_TempGamePanel[AIChosenCoordinate] != null && i_TempGamePanel[AIChosenCoordinate].Team == Player.eTeam.White)
+                    {
+                        if (m_Difficulty == eDifficulty.Hard) 
+                             AICurrentResult += boardScore[column, row];
+                    }
+                }
+            }
+
+            return AICurrentResult;
+        }
+
+        private float[,] getScoreBoard()
+        {
+            float[,] scoreBoard = null;
+
+            switch (m_GamePanel.Size)
+            {
+                case (byte)eBoardSize.Small:
+                    {
+                        scoreBoard = new float[(byte)eBoardSize.Small, (byte)eBoardSize.Small]
+                        { { 16.16f , -3.03f,  0.99f,  0.99f , -3.03f,  16.16f},
+                          { -4.12f , -1.81f, -0.08f, -0.08f , -1.81f, -4.12f },
+                          { 1.33f  , -0.04f,  0.51f,  0.51f , -0.04f,  1.33f },
+                          { 1.33f  , -0.04f,  0.51f,  0.51f , -0.04f,  1.33f },
+                          { -4.12f , -1.81f, -0.08f, -0.08f , -1.81f, -4.12f },
+                          { 16.16f , -3.03f,  0.99f,  0.99f , -3.03f,  16.16f} };
+
+                        break;
+                    }
+                case (byte)eBoardSize.Medium:
+                    {
+                        scoreBoard = new float[(byte)eBoardSize.Medium, (byte)eBoardSize.Medium]
+                        { { 16.16f ,-3.03f,  0.99f,  0.43f,  0.43f,  0.99f , -3.03f,  16.16f},
+                          { -4.12f ,-1.81f, -0.08f, -0.27f, -0.27f, -0.08f , -1.81f, -4.12f },
+                          { 1.33f  ,-0.04f,  0.51f,  0.07f,  0.07f,  0.51f , -0.04f,  1.33f },
+                          { 0.63f  ,-0.18f, -0.04f, -0.01f, -0.01f, -0.04f , -0.18f,  0.63f },
+                          { 0.63f  ,-0.18f, -0.04f, -0.01f, -0.01f, -0.04f , -0.18f,  0.63f },
+                          { 1.33f  ,-0.04f,  0.51f,  0.07f,  0.07f,  0.51f , -0.04f,  1.33f },
+                          { -4.12f ,-1.81f, -0.08f, -0.27f, -0.27f, -0.08f , -1.81f, -4.12f },
+                          { 16.16f ,-3.03f,  0.99f,  0.43f,  0.43f,  0.99f , -3.03f,  16.16f} };
+
+                        break;
+                    }
+                case (byte)eBoardSize.Large:
+                    {
+                        scoreBoard = new float[(byte)eBoardSize.Large, (byte)eBoardSize.Large]
+                        { { 16.16f ,-3.03f,  0.99f,  0.43f,  0.55f,  0.55f  , 0.43f,  0.99f , -3.03f,  16.16f},
+                          { -4.12f ,-1.81f, -0.08f, -0.27f, -0.15f, -0.15f , -0.27f, -0.08f , -1.81f, -4.12f },
+                          { 1.33f  ,-0.04f,  0.51f,  0.07f,  0.07f,  0.07f ,  0.07f,  0.51f , -0.04f,  1.33f },
+                          { 0.63f  ,-0.18f, -0.04f, -0.01f,  0.02f,  0.02f , -0.01f, -0.04f , -0.18f,  0.63f },
+                          { 0.73f  ,-0.14f,  0.02f,  0.01f,  0.00f,  0.00f ,  0.01f,  0.02f , -0.14f,  0.73f },
+                          { 0.73f  ,-0.14f,  0.02f,  0.01f,  0.00f,  0.00f ,  0.01f,  0.02f , -0.14f,  0.73f },
+                          { 0.63f  ,-0.18f, -0.04f, -0.01f,  0.02f,  0.02f , -0.01f, -0.04f , -0.18f,  0.63f },
+                          { 1.33f  ,-0.04f,  0.51f,  0.07f,  0.07f,  0.07f ,  0.07f,  0.51f , -0.04f,  1.33f },
+                          { -4.12f ,-1.81f, -0.08f, -0.27f, -0.15f, -0.15f , -0.27f, -0.08f , -1.81f, -4.12f },
+                          { 16.16f ,-3.03f,  0.99f,  0.43f,  0.55f, 0.55f  ,  0.43f,  0.99f , -3.03f,  16.16f} };
+
+                        break;
+                    }
+            }
+            return scoreBoard;
         }
 
         //--------------------------------------------------------------------------------------//
@@ -423,12 +579,10 @@ namespace Ex02_Othelo
 
         public void SetComputerPieceAndFlipAllTheInfluencedPieces()
         {         
-            short maxPiecesToFlip = 0;
-
             if(Player2.IsHaveValidMove)
             {
-                Coordinates maxPiecesToFlipCoordinate = getMaxPiecesToFlipCoordinate(ref maxPiecesToFlip);
-                SetInputPieceAndFlipAllTheInfluencedPieces(maxPiecesToFlipCoordinate);
+                Coordinates AIChoiceCoordinate = getAIChoiceCoordinateAcoordingToDifficulty();
+                SetInputPieceAndFlipAllTheInfluencedPieces(AIChoiceCoordinate);
             }
         }
 

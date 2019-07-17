@@ -117,19 +117,50 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="button_Play.Font" type="System.Drawing.Font, System.Drawing">
+    <value>David, 16.2pt, style=Bold</value>
+  </data>
+  <data name="button_Play.Location" type="System.Drawing.Point, System.Drawing">
+    <value>191, 324</value>
+  </data>
+  <data name="button_Play.Size" type="System.Drawing.Size, System.Drawing">
+    <value>168, 44</value>
+  </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="button_Play.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="button_Play.Text" xml:space="preserve">
+    <value>Play!</value>
+  </data>
+  <data name="&gt;&gt;button_Play.Name" xml:space="preserve">
+    <value>button_Play</value>
+  </data>
+  <data name="&gt;&gt;button_Play.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;button_Play.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;button_Play.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
   <data name="PlayerName_Label.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="PlayerName_Label.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 13.2000008pt</value>
+    <value>Arial, 13.2000008pt</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="PlayerName_Label.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="PlayerName_Label.Location" type="System.Drawing.Point, System.Drawing">
-    <value>10, 107</value>
+    <value>10, 174</value>
   </data>
   <data name="PlayerName_Label.Size" type="System.Drawing.Size, System.Drawing">
-    <value>158, 29</value>
+    <value>149, 26</value>
   </data>
   <data name="PlayerName_Label.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -150,7 +181,7 @@
     <value>4</value>
   </data>
   <data name="Player1Name_TextBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>172, 112</value>
+    <value>172, 179</value>
   </data>
   <data name="Player1Name_TextBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>193, 22</value>
@@ -173,44 +204,53 @@
   <data name="&gt;&gt;Player1Name_TextBox.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="button_Play.Font" type="System.Drawing.Font, System.Drawing">
-    <value>David, 16.2pt, style=Bold</value>
+  <data name="radioButton_6X6.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
-  <data name="button_Play.Location" type="System.Drawing.Point, System.Drawing">
-    <value>191, 309</value>
+  <data name="radioButton_6X6.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Arial, 10.8pt</value>
   </data>
-  <data name="button_Play.Size" type="System.Drawing.Size, System.Drawing">
-    <value>168, 44</value>
+  <data name="radioButton_6X6.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
-  <data name="button_Play.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+  <data name="radioButton_6X6.Location" type="System.Drawing.Point, System.Drawing">
+    <value>16, 28</value>
   </data>
-  <data name="button_Play.Text" xml:space="preserve">
-    <value>Play!</value>
+  <data name="radioButton_6X6.Size" type="System.Drawing.Size, System.Drawing">
+    <value>76, 26</value>
   </data>
-  <data name="&gt;&gt;button_Play.Name" xml:space="preserve">
-    <value>button_Play</value>
+  <data name="radioButton_6X6.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
   </data>
-  <data name="&gt;&gt;button_Play.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="radioButton_6X6.Text" xml:space="preserve">
+    <value>6 X 6</value>
   </data>
-  <data name="&gt;&gt;button_Play.Parent" xml:space="preserve">
-    <value>$this</value>
+  <data name="&gt;&gt;radioButton_6X6.Name" xml:space="preserve">
+    <value>radioButton_6X6</value>
   </data>
-  <data name="&gt;&gt;button_Play.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;radioButton_6X6.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;radioButton_6X6.Parent" xml:space="preserve">
+    <value>singlePlayer_Panel</value>
+  </data>
+  <data name="&gt;&gt;radioButton_6X6.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="radioButton_10X10.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="radioButton_10X10.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 10.2pt, style=Bold</value>
+    <value>Arial, 10.8pt</value>
+  </data>
+  <data name="radioButton_10X10.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="radioButton_10X10.Location" type="System.Drawing.Point, System.Drawing">
     <value>267, 28</value>
   </data>
   <data name="radioButton_10X10.Size" type="System.Drawing.Size, System.Drawing">
-    <value>94, 24</value>
+    <value>98, 26</value>
   </data>
   <data name="radioButton_10X10.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -234,17 +274,16 @@
     <value>True</value>
   </data>
   <data name="radioButton_8X8.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 10.2pt, style=Bold</value>
+    <value>Arial, 10.8pt</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="radioButton_8X8.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="radioButton_8X8.Location" type="System.Drawing.Point, System.Drawing">
-    <value>146, 28</value>
+    <value>143, 28</value>
   </data>
   <data name="radioButton_8X8.Size" type="System.Drawing.Size, System.Drawing">
-    <value>74, 24</value>
+    <value>76, 26</value>
   </data>
   <data name="radioButton_8X8.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -264,41 +303,35 @@
   <data name="&gt;&gt;radioButton_8X8.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="radioButton_6X6.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="BoardSize_groupBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 9</value>
   </data>
-  <data name="radioButton_6X6.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Microsoft Sans Serif, 10.2pt, style=Bold</value>
+  <data name="BoardSize_groupBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>358, 57</value>
   </data>
-  <data name="radioButton_6X6.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 28</value>
+  <data name="BoardSize_groupBox.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
   </data>
-  <data name="radioButton_6X6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>74, 24</value>
+  <data name="BoardSize_groupBox.Text" xml:space="preserve">
+    <value> Board size: </value>
   </data>
-  <data name="radioButton_6X6.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+  <data name="&gt;&gt;BoardSize_groupBox.Name" xml:space="preserve">
+    <value>BoardSize_groupBox</value>
   </data>
-  <data name="radioButton_6X6.Text" xml:space="preserve">
-    <value>6 X 6</value>
+  <data name="&gt;&gt;BoardSize_groupBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;radioButton_6X6.Name" xml:space="preserve">
-    <value>radioButton_6X6</value>
-  </data>
-  <data name="&gt;&gt;radioButton_6X6.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;radioButton_6X6.Parent" xml:space="preserve">
+  <data name="&gt;&gt;BoardSize_groupBox.Parent" xml:space="preserve">
     <value>singlePlayer_Panel</value>
   </data>
-  <data name="&gt;&gt;radioButton_6X6.ZOrder" xml:space="preserve">
-    <value>0</value>
+  <data name="&gt;&gt;BoardSize_groupBox.ZOrder" xml:space="preserve">
+    <value>5</value>
   </data>
   <data name="singlePlayer_Panel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>88, 76</value>
+    <value>88, 52</value>
   </data>
   <data name="singlePlayer_Panel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>376, 306</value>
+    <value>376, 340</value>
   </data>
   <data name="singlePlayer_Panel.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
@@ -313,7 +346,151 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;singlePlayer_Panel.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="Easy_RadioButton.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="Easy_RadioButton.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Arial, 10.8pt</value>
+  </data>
+  <data name="Easy_RadioButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="Easy_RadioButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>16, 23</value>
+  </data>
+  <data name="Easy_RadioButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>73, 26</value>
+  </data>
+  <data name="Easy_RadioButton.TabIndex" type="System.Int32, mscorlib">
+    <value>17</value>
+  </data>
+  <data name="Easy_RadioButton.Text" xml:space="preserve">
+    <value>Easy</value>
+  </data>
+  <data name="&gt;&gt;Easy_RadioButton.Name" xml:space="preserve">
+    <value>Easy_RadioButton</value>
+  </data>
+  <data name="&gt;&gt;Easy_RadioButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Easy_RadioButton.Parent" xml:space="preserve">
+    <value>Difficulty_Panel</value>
+  </data>
+  <data name="&gt;&gt;Easy_RadioButton.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="Hard_RadioButton.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="Hard_RadioButton.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Arial, 10.8pt</value>
+  </data>
+  <data name="Hard_RadioButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="Hard_RadioButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>267, 23</value>
+  </data>
+  <data name="Hard_RadioButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>71, 26</value>
+  </data>
+  <data name="Hard_RadioButton.TabIndex" type="System.Int32, mscorlib">
+    <value>19</value>
+  </data>
+  <data name="Hard_RadioButton.Text" xml:space="preserve">
+    <value>Hard</value>
+  </data>
+  <data name="&gt;&gt;Hard_RadioButton.Name" xml:space="preserve">
+    <value>Hard_RadioButton</value>
+  </data>
+  <data name="&gt;&gt;Hard_RadioButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Hard_RadioButton.Parent" xml:space="preserve">
+    <value>Difficulty_Panel</value>
+  </data>
+  <data name="&gt;&gt;Hard_RadioButton.ZOrder" xml:space="preserve">
     <value>1</value>
+  </data>
+  <data name="Medium_RadioButton.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="Medium_RadioButton.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Arial, 10.8pt</value>
+  </data>
+  <data name="Medium_RadioButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="Medium_RadioButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>143, 23</value>
+  </data>
+  <data name="Medium_RadioButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>98, 26</value>
+  </data>
+  <data name="Medium_RadioButton.TabIndex" type="System.Int32, mscorlib">
+    <value>18</value>
+  </data>
+  <data name="Medium_RadioButton.Text" xml:space="preserve">
+    <value>Medium</value>
+  </data>
+  <data name="&gt;&gt;Medium_RadioButton.Name" xml:space="preserve">
+    <value>Medium_RadioButton</value>
+  </data>
+  <data name="&gt;&gt;Medium_RadioButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Medium_RadioButton.Parent" xml:space="preserve">
+    <value>Difficulty_Panel</value>
+  </data>
+  <data name="&gt;&gt;Medium_RadioButton.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="Difficulty_GroupBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 3</value>
+  </data>
+  <data name="Difficulty_GroupBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>358, 57</value>
+  </data>
+  <data name="Difficulty_GroupBox.TabIndex" type="System.Int32, mscorlib">
+    <value>16</value>
+  </data>
+  <data name="Difficulty_GroupBox.Text" xml:space="preserve">
+    <value> Difficulty: </value>
+  </data>
+  <data name="&gt;&gt;Difficulty_GroupBox.Name" xml:space="preserve">
+    <value>Difficulty_GroupBox</value>
+  </data>
+  <data name="&gt;&gt;Difficulty_GroupBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Difficulty_GroupBox.Parent" xml:space="preserve">
+    <value>Difficulty_Panel</value>
+  </data>
+  <data name="&gt;&gt;Difficulty_GroupBox.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="Difficulty_Panel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>91, 124</value>
+  </data>
+  <data name="Difficulty_Panel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>370, 73</value>
+  </data>
+  <data name="Difficulty_Panel.TabIndex" type="System.Int32, mscorlib">
+    <value>16</value>
+  </data>
+  <data name="&gt;&gt;Difficulty_Panel.Name" xml:space="preserve">
+    <value>Difficulty_Panel</value>
+  </data>
+  <data name="&gt;&gt;Difficulty_Panel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;Difficulty_Panel.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;Difficulty_Panel.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

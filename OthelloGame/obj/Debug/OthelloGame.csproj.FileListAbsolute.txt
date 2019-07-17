@@ -15,3 +15,20 @@ C:\Users\97254\Desktop\Computer Science\MyProjects\OthelloGame-WinFormUI\Othello
 C:\Users\97254\Desktop\Computer Science\MyProjects\OthelloGame-WinFormUI\OthelloGameByLaviKetner\OthelloGame\obj\Debug\OthelloGame.csproj.CopyComplete
 C:\Users\97254\Desktop\Computer Science\MyProjects\OthelloGame-WinFormUI\OthelloGameByLaviKetner\OthelloGame\obj\Debug\Ex02_Othelo.exe
 C:\Users\97254\Desktop\Computer Science\MyProjects\OthelloGame-WinFormUI\OthelloGameByLaviKetner\OthelloGame\obj\Debug\Ex02_Othelo.pdb
+C:\Users\97254\Desktop\Computer Science\MyProjects\OthelloGame-WinFormUI\OthelloGame - Local\OthelloGame\bin\Debug\Ex02_Othelo.exe.config
+C:\Users\97254\Desktop\Computer Science\MyProjects\OthelloGame-WinFormUI\OthelloGame - Local\OthelloGame\bin\Debug\Ex02_Othelo.exe
+C:\Users\97254\Desktop\Computer Science\MyProjects\OthelloGame-WinFormUI\OthelloGame - Local\OthelloGame\bin\Debug\Ex02_Othelo.pdb
+C:\Users\97254\Desktop\Computer Science\MyProjects\OthelloGame-WinFormUI\OthelloGame - Local\OthelloGame\bin\Debug\Ex02.ConsoleUtils.dll
+C:\Users\97254\Desktop\Computer Science\MyProjects\OthelloGame-WinFormUI\OthelloGame - Local\OthelloGame\obj\Debug\OthelloGame.csprojAssemblyReference.cache
+C:\Users\97254\Desktop\Computer Science\MyProjects\OthelloGame-WinFormUI\OthelloGame - Local\OthelloGame\obj\Debug\Ex02_Othelo.FormGameSettings.resources
+C:\Users\97254\Desktop\Computer Science\MyProjects\OthelloGame-WinFormUI\OthelloGame - Local\OthelloGame\obj\Debug\Ex02_Othelo.FormOpeningLogo.resources
+C:\Users\97254\Desktop\Computer Science\MyProjects\OthelloGame-WinFormUI\OthelloGame - Local\OthelloGame\obj\Debug\Ex02_Othelo.FormOthloGameBoard.resources
+C:\Users\97254\Desktop\Computer Science\MyProjects\OthelloGame-WinFormUI\OthelloGame - Local\OthelloGame\obj\Debug\Ex02_Othelo.FormPlayOnline.resources
+C:\Users\97254\Desktop\Computer Science\MyProjects\OthelloGame-WinFormUI\OthelloGame - Local\OthelloGame\obj\Debug\Ex02_Othelo.FormSinglePlayer.resources
+C:\Users\97254\Desktop\Computer Science\MyProjects\OthelloGame-WinFormUI\OthelloGame - Local\OthelloGame\obj\Debug\Ex02_Othelo.FormTwoPlayers.resources
+C:\Users\97254\Desktop\Computer Science\MyProjects\OthelloGame-WinFormUI\OthelloGame - Local\OthelloGame\obj\Debug\Ex02_Othelo.Properties.Resources.resources
+C:\Users\97254\Desktop\Computer Science\MyProjects\OthelloGame-WinFormUI\OthelloGame - Local\OthelloGame\obj\Debug\OthelloGame.csproj.GenerateResource.cache
+C:\Users\97254\Desktop\Computer Science\MyProjects\OthelloGame-WinFormUI\OthelloGame - Local\OthelloGame\obj\Debug\OthelloGame.csproj.CoreCompileInputs.cache
+C:\Users\97254\Desktop\Computer Science\MyProjects\OthelloGame-WinFormUI\OthelloGame - Local\OthelloGame\obj\Debug\OthelloGame.csproj.CopyComplete
+C:\Users\97254\Desktop\Computer Science\MyProjects\OthelloGame-WinFormUI\OthelloGame - Local\OthelloGame\obj\Debug\Ex02_Othelo.exe
+C:\Users\97254\Desktop\Computer Science\MyProjects\OthelloGame-WinFormUI\OthelloGame - Local\OthelloGame\obj\Debug\Ex02_Othelo.pdb

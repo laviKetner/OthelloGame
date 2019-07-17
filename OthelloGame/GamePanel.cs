@@ -30,20 +30,13 @@ namespace Ex02_Othelo
         //--------------------------------------------------------------------------------------//
         public Piece this[Coordinates i_Cell]
         {
-            get
-            {
-                return m_Board[i_Cell.X, i_Cell.Y];
-            }
-
-            set
-            {
-                m_Board[i_Cell.X, i_Cell.Y] = value;
-            }
+            get{ return m_Board[i_Cell.X, i_Cell.Y]; }
+            set{ m_Board[i_Cell.X, i_Cell.Y] = value; }
         }
 
         public byte Size
         {
-            get{ return r_Size; }
+            get { return r_Size; }
         }
 
         //--------------------------------------------------------------------------------------//
@@ -139,6 +132,27 @@ namespace Ex02_Othelo
                     m_Board[row, column] = null;
                 }
             }
+        }
+
+        public GamePanel ShallowClone()
+        {
+            GamePanel shallowCloneGamePanel = new GamePanel(r_Size);
+
+            foreach(Piece currentPieceOnBoard in m_Board )
+            {
+                if (currentPieceOnBoard != null) 
+                    shallowCloneGamePanel.m_Board[currentPieceOnBoard.CoordinatesOnBoard.X, currentPieceOnBoard.CoordinatesOnBoard.Y] = currentPieceOnBoard.ShallowClone();
+            }
+                
+            return shallowCloneGamePanel;
+        }
+
+        //this func add directly piece to board, only for checking what is the best AI move. 
+        public void addTempPieceToBoard(Piece i_TempPiece)
+        {
+            Piece tempPiece = i_TempPiece.ShallowClone();
+            tempPiece.Team = Player.eTeam.White;
+            m_Board[i_TempPiece.CoordinatesOnBoard.X, i_TempPiece.CoordinatesOnBoard.Y] = tempPiece;
         }
     }
 }

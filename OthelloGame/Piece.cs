@@ -2,13 +2,13 @@
 {
     public class Piece
     {
-        private Player.eTeam r_Team;
+        private Player.eTeam m_Team;
         private Coordinates  m_CoordinatesOnBoard;
 
         // Piece Constructor
         public Piece(Player.eTeam i_Team, Coordinates i_Coordinates)
         {
-            r_Team = i_Team;
+            m_Team = i_Team;
             m_CoordinatesOnBoard = i_Coordinates;
         }
 
@@ -17,8 +17,8 @@
         //-------------------------------------------------------------------------------//
         public Player.eTeam Team
         {
-            get{ return r_Team; }
-            set{ r_Team = value; }
+            get{ return m_Team; }
+            set{ m_Team = value; }
         }
 
         public Coordinates CoordinatesOnBoard
@@ -29,7 +29,7 @@
 
         public Player.eTeam Symbol
         {
-            get{ return r_Team; }
+            get{ return m_Team; }
         }
 
         //-------------------------------------------------------------------------------//
@@ -38,7 +38,12 @@
 
         public void ChangePieceTeam()
         {
-           r_Team = r_Team == Player.eTeam.Black ? Player.eTeam.White : Player.eTeam.Black;
+           m_Team = m_Team == Player.eTeam.Black ? Player.eTeam.White : Player.eTeam.Black;
+        }
+
+        public Piece ShallowClone()
+        {
+            return new Piece(m_Team, m_CoordinatesOnBoard);
         }
     }
 }

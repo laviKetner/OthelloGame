@@ -38,6 +38,7 @@
             this.Player1Name_TextBox = new System.Windows.Forms.TextBox();
             this.radioButton_8X8 = new System.Windows.Forms.RadioButton();
             this.Player1Name_Label = new System.Windows.Forms.Label();
+            this.BoardSize_groupBox = new System.Windows.Forms.GroupBox();
             this.TwoPlayers_Panel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -59,12 +60,13 @@
             // TwoPlayers_Panel
             // 
             this.TwoPlayers_Panel.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.TwoPlayers_Panel.Controls.Add(this.radioButton_6X6);
+            this.TwoPlayers_Panel.Controls.Add(this.radioButton_8X8);
+            this.TwoPlayers_Panel.Controls.Add(this.radioButton_10X10);
+            this.TwoPlayers_Panel.Controls.Add(this.BoardSize_groupBox);
             this.TwoPlayers_Panel.Controls.Add(this.Player2Name_TextBox);
             this.TwoPlayers_Panel.Controls.Add(this.Player2Name_Label);
-            this.TwoPlayers_Panel.Controls.Add(this.radioButton_6X6);
-            this.TwoPlayers_Panel.Controls.Add(this.radioButton_10X10);
             this.TwoPlayers_Panel.Controls.Add(this.Player1Name_TextBox);
-            this.TwoPlayers_Panel.Controls.Add(this.radioButton_8X8);
             this.TwoPlayers_Panel.Controls.Add(this.Player1Name_Label);
             this.TwoPlayers_Panel.Location = new System.Drawing.Point(87, 75);
             this.TwoPlayers_Panel.Name = "TwoPlayers_Panel";
@@ -98,14 +100,14 @@
             // radioButton_6X6
             // 
             this.radioButton_6X6.AutoSize = true;
-            this.radioButton_6X6.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.radioButton_6X6.BackColor = System.Drawing.Color.Transparent;
             this.radioButton_6X6.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.radioButton_6X6.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold);
+            this.radioButton_6X6.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.radioButton_6X6.ForeColor = System.Drawing.Color.SpringGreen;
             this.radioButton_6X6.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.radioButton_6X6.Location = new System.Drawing.Point(16, 28);
             this.radioButton_6X6.Name = "radioButton_6X6";
-            this.radioButton_6X6.Size = new System.Drawing.Size(74, 24);
+            this.radioButton_6X6.Size = new System.Drawing.Size(69, 23);
             this.radioButton_6X6.TabIndex = 0;
             this.radioButton_6X6.Text = "6 X 6";
             this.radioButton_6X6.UseVisualStyleBackColor = false;
@@ -113,14 +115,14 @@
             // radioButton_10X10
             // 
             this.radioButton_10X10.AutoSize = true;
-            this.radioButton_10X10.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.radioButton_10X10.BackColor = System.Drawing.Color.Transparent;
             this.radioButton_10X10.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.radioButton_10X10.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold);
+            this.radioButton_10X10.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.radioButton_10X10.ForeColor = System.Drawing.Color.SpringGreen;
             this.radioButton_10X10.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.radioButton_10X10.Location = new System.Drawing.Point(267, 28);
             this.radioButton_10X10.Name = "radioButton_10X10";
-            this.radioButton_10X10.Size = new System.Drawing.Size(94, 24);
+            this.radioButton_10X10.Size = new System.Drawing.Size(87, 23);
             this.radioButton_10X10.TabIndex = 2;
             this.radioButton_10X10.Text = "10 X 10";
             this.radioButton_10X10.UseVisualStyleBackColor = false;
@@ -139,15 +141,15 @@
             // radioButton_8X8
             // 
             this.radioButton_8X8.AutoSize = true;
-            this.radioButton_8X8.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.radioButton_8X8.BackColor = System.Drawing.Color.Transparent;
             this.radioButton_8X8.Checked = true;
             this.radioButton_8X8.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.radioButton_8X8.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold);
+            this.radioButton_8X8.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.radioButton_8X8.ForeColor = System.Drawing.Color.SpringGreen;
             this.radioButton_8X8.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.radioButton_8X8.Location = new System.Drawing.Point(146, 28);
             this.radioButton_8X8.Name = "radioButton_8X8";
-            this.radioButton_8X8.Size = new System.Drawing.Size(74, 24);
+            this.radioButton_8X8.Size = new System.Drawing.Size(69, 23);
             this.radioButton_8X8.TabIndex = 1;
             this.radioButton_8X8.TabStop = true;
             this.radioButton_8X8.Text = "8 X 8";
@@ -165,6 +167,17 @@
             this.Player1Name_Label.Size = new System.Drawing.Size(157, 26);
             this.Player1Name_Label.TabIndex = 0;
             this.Player1Name_Label.Text = "Player1 Name:";
+            // 
+            // BoardSize_groupBox
+            // 
+            this.BoardSize_groupBox.BackColor = System.Drawing.Color.Transparent;
+            this.BoardSize_groupBox.ForeColor = System.Drawing.Color.SpringGreen;
+            this.BoardSize_groupBox.Location = new System.Drawing.Point(7, 7);
+            this.BoardSize_groupBox.Name = "BoardSize_groupBox";
+            this.BoardSize_groupBox.Size = new System.Drawing.Size(358, 57);
+            this.BoardSize_groupBox.TabIndex = 14;
+            this.BoardSize_groupBox.TabStop = false;
+            this.BoardSize_groupBox.Text = " Board size: ";
             // 
             // FormTwoPlayers
             // 
@@ -197,5 +210,6 @@
         private System.Windows.Forms.TextBox Player1Name_TextBox;
         private System.Windows.Forms.RadioButton radioButton_8X8;
         private System.Windows.Forms.Label Player1Name_Label;
+        private System.Windows.Forms.GroupBox BoardSize_groupBox;
     }
 }

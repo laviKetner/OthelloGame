@@ -13,6 +13,14 @@ namespace Ex02_Othelo
         Large = 10
     }
 
+    public enum eDifficulty : byte
+    {
+        Easy,
+        Medium,
+        Hard,
+        Empty_AgainstHuman,
+    }
+
     class OtheloGameManager
     {
         //--------------------------------------------------------------------------------------//
@@ -27,6 +35,7 @@ namespace Ex02_Othelo
         private string             m_Player1Name = null;
         private string             m_Player2Name = "Computer";
         private bool               m_IsAgainstComputer = false;
+        private eDifficulty        m_Difficulty;
 
         //--------------------------------------------------------------------------------------//
         //                                   Initialize Game                                    //
@@ -52,6 +61,7 @@ namespace Ex02_Othelo
                             formSinglePlayer.ShowDialog();
                             m_Player1Name = formSinglePlayer.Player1Name;
                             m_BoardSize = (byte)formSinglePlayer.BoardSize;
+                            m_Difficulty = formSinglePlayer.Difficulty;
                             m_IsAgainstComputer = true;
                             break;
                         }
@@ -74,7 +84,7 @@ namespace Ex02_Othelo
             }
 
             //initializeGameLogic
-            m_OtheloGameLogic = new OtheloGameLogic(m_BoardSize, m_Player1Name, m_Player2Name, m_IsAgainstComputer);
+            m_OtheloGameLogic = new OtheloGameLogic(m_BoardSize, m_Player1Name, m_Player2Name, m_IsAgainstComputer,m_Difficulty);
             m_OtheloGameLogic.ValidMovesCoordinateChange += sendToFormOthloGameBoardTheCurrentValidMovesCoordinate;
             m_OtheloGameLogic.PieceAddedOnBoard += pieceAddedOnBoard;
             m_OtheloGameLogic.CellsChangedTeam += cellsChangedTeam;
