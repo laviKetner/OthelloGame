@@ -13,6 +13,7 @@ namespace Ex02_Othelo
 {
     public delegate void clickOnPictureBoxEventHandler(Coordinates ClickedCoordinate);
     public delegate void PlayerWantNewRoundEventHandler(bool firstRoundFlag = false);
+    public delegate void PlayerSavedGameEventHandler();
 
     public partial class FormOthloGameBoard : Form
     {
@@ -27,38 +28,61 @@ namespace Ex02_Othelo
         private PictureBox          m_PlayerTurnPictureBox;
 
         public event clickOnPictureBoxEventHandler  PlayerMakeAMove;
-        public event PlayerWantNewRoundEventHandler newRound;
-
-        public FormOthloGameBoard(byte i_BoardSize, string i_Player1Name, string i_Player2Name)
+        public event PlayerWantNewRoundEventHandler NewRound;
+        public event PlayerSavedGameEventHandler    SaveGame; 
+            
+        public FormOthloGameBoard(byte i_BoardSize, string i_Player1Name, string i_Player2Name, bool i_IsLoadedGame, List<Piece> i_ListOfPlayer1Pieces, List<Piece> i_ListOfPlayer2Pieces)
         {
             InitializeComponent();
-            initializeBoard(i_BoardSize, i_Player1Name, i_Player2Name);
+            FormClosing += FormOthloGameBoard_FormClosing;
+            initializeBoard(i_BoardSize, i_Player1Name, i_Player2Name, i_IsLoadedGame, i_ListOfPlayer1Pieces, i_ListOfPlayer2Pieces);
         }
 
         //--------------------------------------------------------------------------------------//
         //                                initialize UIBoard                                    //
         //--------------------------------------------------------------------------------------//
 
-        private void initializeBoard(byte i_BoardSize, string i_Player1Name, string i_Player2Name)
+        private void initializeBoard(byte i_BoardSize, string i_Player1Name, string i_Player2Name, bool i_IsLoadedGame, List<Piece> i_ListOfPlayer1Pieces, List<Piece> i_ListOfPlayer2Pieces)
         {
             resizeBoard(i_BoardSize);
-            initializeScoresLabel(i_BoardSize, i_Player1Name, i_Player2Name);
             initializePlayerTurnLabelAndPictureBox();
-
+            initializeScoresLabel(i_BoardSize, i_Player1Name, i_Player2Name);
             m_ImageOnBoard = new PiecesPictureBox[(byte)i_BoardSize,(byte)i_BoardSize];
 
-            for (byte row = 0; row < (byte)i_BoardSize; row++)
-            {
-                for (byte column = 0; column < (byte)i_BoardSize; column++)
+                for (byte row = 0; row < (byte)i_BoardSize; row++)
                 {
-                    Coordinates currentCoordinateImage = new Coordinates(row, column);
-                    m_ImageOnBoard[row, column] = new PiecesPictureBox(Player.eTeam.None, currentCoordinateImage);
-                        
-                    this.Controls.Add(m_ImageOnBoard[row, column]);
+                    for (byte column = 0; column < (byte)i_BoardSize; column++)
+                    {
+                        Coordinates currentCoordinateImage = new Coordinates(row, column);
+                        m_ImageOnBoard[row, column] = new PiecesPictureBox(currentCoordinateImage);
+                        this.Controls.Add(m_ImageOnBoard[row, column]);
+                    }
                 }
+
+            if (i_IsLoadedGame == false)
+            {
+                initializeTheFourFirstImages(i_BoardSize);
+            }
+            else
+            {
+                initializeLoadedPiecesAndUpdateScore(i_ListOfPlayer1Pieces);
+                initializeLoadedPiecesAndUpdateScore(i_ListOfPlayer2Pieces);
+            }
+        }
+
+        private void initializeLoadedPiecesAndUpdateScore(List<Piece> i_ListOfPlayerPieces)
+        {
+            int playerScore = 0;
+            foreach (Piece currentPiece in i_ListOfPlayerPieces)
+            {
+                byte row = currentPiece.CoordinatesOnBoard.X;
+                byte column = currentPiece.CoordinatesOnBoard.Y;
+                m_ImageOnBoard[row, column].Team = currentPiece.Team;
+                Controls.Add(m_ImageOnBoard[row, column]);
+                playerScore++;
             }
 
-            initializeTheFourFirstImages(i_BoardSize);
+            ShowUpdatePlayerScore(i_ListOfPlayerPieces[0].Team, playerScore);
         }
 
         private void initializePlayerTurnLabelAndPictureBox()
@@ -185,6 +209,7 @@ namespace Ex02_Othelo
         public void PrintGameOverWithWinnerMessage(Player i_Winner)
         {
             string GameOverMessage;
+            FormClosing -= FormOthloGameBoard_FormClosing;
 
             if (i_Winner == null)
             {
@@ -204,7 +229,7 @@ Want a new game?", i_Winner.Name);
             if (dialogResult == DialogResult.Yes)
             {
                 Dispose();
-                newRound.Invoke();
+                NewRound.Invoke();
             }
             else if (dialogResult == DialogResult.No)
                 Close();
@@ -221,12 +246,28 @@ Want a new game?", i_Winner.Name);
                 m_PlayerTurnPictureBox.Load(@"...\...\...\Images\WhitePiece.gif");
         }
 
-        public void ShowUpdatePlayerScore(Player i_UpdatedPlayerScore)
+        public void ShowUpdatePlayerScore(Player.eTeam i_PlayerTeam, int i_Score)
         {
-            if (i_UpdatedPlayerScore.Team == Player.eTeam.Black)
-                m_Player1LabelScore.Text = i_UpdatedPlayerScore.Score.ToString();
+            if (i_PlayerTeam == Player.eTeam.Black)
+                m_Player1LabelScore.Text = i_Score.ToString();
             else
-                m_Player2LabelScore.Text = i_UpdatedPlayerScore.Score.ToString();
+                m_Player2LabelScore.Text = i_Score.ToString();
+        }
+
+        private void OnSaveGame()
+        {
+            SaveGame.Invoke();
+        }
+
+        public void SaveGameToFile(string[] i_GameCurrentPositionOnString)
+        {
+            SaveFileDialog saver = new SaveFileDialog();
+            DialogResult resultFileDialog = saver.ShowDialog();
+            
+            if (resultFileDialog == DialogResult.OK)
+            {
+                System.IO.File.WriteAllLines(saver.FileName + ".otlo", i_GameCurrentPositionOnString);
+            }
         }
 
         //--------------------------------------------------------------------------------------//
@@ -236,6 +277,14 @@ Want a new game?", i_Winner.Name);
         {
             PiecesPictureBox ImagedOnBoard = i_ImagedOnBoard as PiecesPictureBox;
             PlayerMakeAMove.Invoke(ImagedOnBoard.ImageCoordinate);
+        }
+
+        private void FormOthloGameBoard_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            DialogResult dialogSave = MessageBox.Show("Do you want to Save the game?", "Save", MessageBoxButtons.YesNo);
+
+            if (dialogSave == DialogResult.Yes)
+                OnSaveGame();
         }
     }  
 }

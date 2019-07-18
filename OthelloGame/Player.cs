@@ -8,7 +8,6 @@ namespace Ex02_Othelo
         {
             White = 'O',
             Black = 'X',
-            None  = 'N'
         }
 
         private readonly eTeam r_Team;
@@ -60,6 +59,11 @@ namespace Ex02_Othelo
         public List<Piece> Pieces
         {
             get{ return m_Pieces; }
+        }
+
+        public override string ToString()
+        {
+            return r_Team == eTeam.Black ? "Player1" : "Player2";
         }
 
         // -----------------------------------------------------------------------------//

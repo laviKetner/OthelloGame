@@ -61,7 +61,7 @@ namespace Ex02_Othelo
 
         protected virtual void OnValidMovesChanges()
         {
-            List<Coordinates> validMoveCoordinate = new List<Coordinates>();
+            List<Coordinates> validMovesCoordinate = new List<Coordinates>();
             for (byte row = 0; row < m_GamePanel.Size; row++) 
             {
                 for (byte column = 0; column < m_GamePanel.Size; column++) 
@@ -69,22 +69,22 @@ namespace Ex02_Othelo
                     if (m_ChangeTeamPieces[row, column].Count != 0) 
                     {
                         Coordinates currentValidCoordinate = new Coordinates(row, column);
-                        validMoveCoordinate.Add(currentValidCoordinate);
+                        validMovesCoordinate.Add(currentValidCoordinate);
                     }
                 }
             }
 
-            ValidMovesCoordinateChange.Invoke(validMoveCoordinate);
+            ValidMovesCoordinateChange.Invoke(validMovesCoordinate);
         }
 
         //--------------------------------------------------------------------------------------//
         //                              Run Game - Constractur                                  //
         //--------------------------------------------------------------------------------------//
-        public OtheloGameLogic(byte i_BoardSize, string i_Player1Name, string i_Player2Name, bool i_IsPlayer2IsComputer, eDifficulty i_Difficulty = eDifficulty.Empty_AgainstHuman)
+        public OtheloGameLogic(byte i_BoardSize, string i_Player1Name, string i_Player2Name, bool i_IsPlayer2IsComputer, Player.eTeam i_Turn, eDifficulty i_Difficulty = eDifficulty.Empty_AgainstHuman)
         {
             const bool v_Player1IsAlwaysNotComputer = false;
             m_Difficulty = i_Difficulty;
-
+            m_Turn = i_Turn;
             m_GamePanel = new GamePanel(i_BoardSize);
             m_Player1 = new Player(i_Player1Name, v_Player1IsAlwaysNotComputer, Player.eTeam.Black);
             m_Player2 = new Player(i_Player2Name, i_IsPlayer2IsComputer, Player.eTeam.White);
@@ -94,13 +94,33 @@ namespace Ex02_Othelo
         //--------------------------------------------------------------------------------------//
         //                              Initialize Function                                     //
         //--------------------------------------------------------------------------------------//
-        public void InitializeGame()
+        public void InitializeGame(bool i_LoadedGame, List<Piece> i_ListOfPlayer1Pieces, List<Piece> i_ListOfPlayer2Pieces)
         {
-            m_Player1.Pieces.Clear();
-            m_Player2.Pieces.Clear();
-            m_Winner = null;
-            m_Turn = Player.eTeam.Black;
-            initializeStartPositionOfPiecesOnBoard();
+            if (i_LoadedGame == false)
+            {
+                m_Player1.Pieces.Clear();
+                m_Player2.Pieces.Clear();
+                m_Winner = null;
+                m_Turn = Player.eTeam.Black;
+                initializeStartPositionOfPiecesOnBoard();
+            }
+            else
+            {
+                foreach(Piece currentPiece in i_ListOfPlayer1Pieces)
+                {
+                    m_Player1.AddPiece(currentPiece);
+                    m_GamePanel[currentPiece.CoordinatesOnBoard] = currentPiece;
+                    m_Player1.Score++;
+                }
+                    
+                foreach (Piece currentPiece in i_ListOfPlayer2Pieces)
+                {
+                    m_Player2.AddPiece(currentPiece);
+                    m_GamePanel[currentPiece.CoordinatesOnBoard] = currentPiece;
+                    m_Player2.Score++;
+                }    
+            }
+
             makeAListOfCurrectMoves();
             OnValidMovesChanges();
         }

@@ -3,22 +3,31 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
+using System.IO;
 
 namespace Ex02_Othelo
 {
     public enum eBoardSize : byte
     {
-        Small = 6,
+        Small  = 6,
         Medium = 8,
-        Large = 10
+        Large  = 10
     }
 
     public enum eDifficulty : byte
     {
-        Easy,
-        Medium,
-        Hard,
-        Empty_AgainstHuman,
+        Empty_AgainstHuman = 0,
+        Easy               = 1,
+        Medium             = 2,
+        Hard               = 3,
+    }
+
+    public enum eGameMode : byte
+    {
+        AgainstComputer     = 0,
+        AgainstPlayer       = 1,
+        AgainstPlayerOnline = 2
     }
 
     class OtheloGameManager
@@ -31,15 +40,21 @@ namespace Ex02_Othelo
         private FormOthloGameBoard m_FormOthloGameBoard;
         private OtheloGameLogic    m_OtheloGameLogic;
         private byte               m_BoardSize;
-        private eGameMode          m_GameMode;
+        private byte               m_GameMode;
         private string             m_Player1Name = null;
         private string             m_Player2Name = "Computer";
         private bool               m_IsAgainstComputer = false;
-        private eDifficulty        m_Difficulty;
+        private byte               m_Difficulty;
+        private bool               m_LoadedGame = false;
+        private Player.eTeam       m_Turn = Player.eTeam.Black;
+
+        private List<Piece>        m_ListOfPlayer1Pieces; //Incase of loaded game we need to load this lists and bring them to GameLogic
+        private List<Piece>        m_ListOfPlayer2Pieces; //Incase of loaded game we need to load this lists and bring them to GameLogic
 
         //--------------------------------------------------------------------------------------//
         //                                   Initialize Game                                    //
         //--------------------------------------------------------------------------------------//
+
         public void RunGame()
         {
             initializeGame();
@@ -50,51 +65,57 @@ namespace Ex02_Othelo
             if (i_IsFirstRoundFlag)
             {
                 m_FormGameSettings = new FormGameSettings();
+                m_FormGameSettings.LoadGame += loadGame;
                 m_FormGameSettings.ShowDialog();
-                m_GameMode = m_FormGameSettings.GameMode;
 
-                switch (m_GameMode)
+                if (m_LoadedGame == false)
                 {
-                    case eGameMode.AgainstComputer:
-                        {
-                            FormSinglePlayer formSinglePlayer = new FormSinglePlayer();
-                            formSinglePlayer.ShowDialog();
-                            m_Player1Name = formSinglePlayer.Player1Name;
-                            m_BoardSize = (byte)formSinglePlayer.BoardSize;
-                            m_Difficulty = formSinglePlayer.Difficulty;
-                            m_IsAgainstComputer = true;
-                            break;
-                        }
-                    case eGameMode.AgainstPlayer:
-                        {
-                            FormTwoPlayers formTwoPlayer = new FormTwoPlayers();
-                            formTwoPlayer.ShowDialog();
-                            m_Player1Name = formTwoPlayer.Player1Name;
-                            m_Player2Name = formTwoPlayer.Player2Name;
-                            m_BoardSize = (byte)formTwoPlayer.BoardSize;
-                            break;
-                        }
-                    case eGameMode.AgainstPlayerOnline:
-                        {
-                            FormPlayOnline formPlayOnline = new FormPlayOnline();
-                            formPlayOnline.ShowDialog();
-                            break;
-                        }
-                }  
+                    m_GameMode = (byte)m_FormGameSettings.GameMode;
+                    switch ((eGameMode)m_GameMode)
+                    {
+                        case eGameMode.AgainstComputer:
+                            {
+                                FormSinglePlayer formSinglePlayer = new FormSinglePlayer();
+                                formSinglePlayer.ShowDialog();
+                                m_Player1Name = formSinglePlayer.Player1Name;
+                                m_BoardSize = (byte)formSinglePlayer.BoardSize;
+                                m_Difficulty = (byte)formSinglePlayer.Difficulty;
+                                m_IsAgainstComputer = true;
+                                break;
+                            }
+                        case eGameMode.AgainstPlayer:
+                            {
+                                FormTwoPlayers formTwoPlayer = new FormTwoPlayers();
+                                formTwoPlayer.ShowDialog();
+                                m_Player1Name = formTwoPlayer.Player1Name;
+                                m_Player2Name = formTwoPlayer.Player2Name;
+                                m_BoardSize = (byte)formTwoPlayer.BoardSize;
+                                break;
+                            }
+                        case eGameMode.AgainstPlayerOnline:
+                            {
+                                FormPlayOnline formPlayOnline = new FormPlayOnline();
+                                formPlayOnline.ShowDialog();
+                                break;
+                            }
+                    }
+                }
             }
 
             //initializeGameLogic
-            m_OtheloGameLogic = new OtheloGameLogic(m_BoardSize, m_Player1Name, m_Player2Name, m_IsAgainstComputer,m_Difficulty);
+            m_OtheloGameLogic = new OtheloGameLogic(m_BoardSize, m_Player1Name, m_Player2Name, m_IsAgainstComputer, m_Turn, (eDifficulty)m_Difficulty);
             m_OtheloGameLogic.ValidMovesCoordinateChange += sendToFormOthloGameBoardTheCurrentValidMovesCoordinate;
             m_OtheloGameLogic.PieceAddedOnBoard += pieceAddedOnBoard;
             m_OtheloGameLogic.CellsChangedTeam += cellsChangedTeam;
 
             //initializeGameUI
-            m_FormOthloGameBoard = new FormOthloGameBoard(m_BoardSize, m_Player1Name, m_Player2Name);
-            m_FormOthloGameBoard.newRound += initializeGame;
+            m_FormOthloGameBoard = new FormOthloGameBoard(m_BoardSize, m_Player1Name, m_Player2Name, m_LoadedGame, m_ListOfPlayer1Pieces, m_ListOfPlayer2Pieces);
+            m_FormOthloGameBoard.NewRound += initializeGame;
             m_FormOthloGameBoard.PlayerMakeAMove += doPlayersMove;
+            m_FormOthloGameBoard.SaveGame += PlayerSavedGame;
 
-            m_OtheloGameLogic.InitializeGame();
+            m_OtheloGameLogic.InitializeGame(m_LoadedGame, m_ListOfPlayer1Pieces, m_ListOfPlayer2Pieces);
+            m_LoadedGame = false;
             startPlaying();         
         }
 
@@ -161,8 +182,8 @@ namespace Ex02_Othelo
                 if (m_OtheloGameLogic.Player2.IsPlayerIsComputer)
                     m_OtheloGameLogic.SetComputerPieceAndFlipAllTheInfluencedPieces();
 
-                m_FormOthloGameBoard.ShowUpdatePlayerScore(m_OtheloGameLogic.Player1);
-                m_FormOthloGameBoard.ShowUpdatePlayerScore(m_OtheloGameLogic.Player2);
+                m_FormOthloGameBoard.ShowUpdatePlayerScore(m_OtheloGameLogic.Player1.Team, m_OtheloGameLogic.Player1.Score);
+                m_FormOthloGameBoard.ShowUpdatePlayerScore(m_OtheloGameLogic.Player2.Team, m_OtheloGameLogic.Player2.Score);
             }
             else
                 m_OtheloGameLogic.ChangeTurn();
@@ -174,8 +195,8 @@ namespace Ex02_Othelo
                 if (m_OtheloGameLogic.Player2.IsHaveValidMove)
                 {
                     m_OtheloGameLogic.SetComputerPieceAndFlipAllTheInfluencedPieces();
-                    m_FormOthloGameBoard.ShowUpdatePlayerScore(m_OtheloGameLogic.Player1);
-                    m_FormOthloGameBoard.ShowUpdatePlayerScore(m_OtheloGameLogic.Player2);
+                    m_FormOthloGameBoard.ShowUpdatePlayerScore(m_OtheloGameLogic.Player1.Team, m_OtheloGameLogic.Player1.Score);
+                    m_FormOthloGameBoard.ShowUpdatePlayerScore(m_OtheloGameLogic.Player2.Team, m_OtheloGameLogic.Player2.Score);
                 }
                 else
                 {
@@ -191,8 +212,8 @@ namespace Ex02_Othelo
             {
                 io_IsGameOver = false;
                 m_OtheloGameLogic.SetInputPieceAndFlipAllTheInfluencedPieces(i_PlayerMoveCoordinate);
-                m_FormOthloGameBoard.ShowUpdatePlayerScore(m_OtheloGameLogic.GetCurrentPlayerTurn());
-                m_FormOthloGameBoard.ShowUpdatePlayerScore(m_OtheloGameLogic.GetOpposingPlayer());
+                m_FormOthloGameBoard.ShowUpdatePlayerScore(m_OtheloGameLogic.GetCurrentPlayerTurn().Team, m_OtheloGameLogic.GetCurrentPlayerTurn().Score);
+                m_FormOthloGameBoard.ShowUpdatePlayerScore(m_OtheloGameLogic.GetOpposingPlayer().Team, m_OtheloGameLogic.GetOpposingPlayer().Score);
             }
             else
                 m_OtheloGameLogic.ChangeTurn();
@@ -202,6 +223,136 @@ namespace Ex02_Othelo
         {
             m_FormOthloGameBoard.AddPieceOnBoard(i_PieceAddedOnBoard);
         }
-    }
 
+        private void loadGame(string[] i_StringOfstateOfGameToLoad)
+        {
+            m_LoadedGame = true;
+            XmlDocument xmlStateOfGame = new XmlDocument();
+            xmlStateOfGame.LoadXml(i_StringOfstateOfGameToLoad[0]);
+
+            getSettingInfoFromXml(xmlStateOfGame);
+            m_ListOfPlayer1Pieces = getListOfPiecesFromXml(xmlStateOfGame, "Player1Pieces");
+            m_ListOfPlayer2Pieces = getListOfPiecesFromXml(xmlStateOfGame, "Player2Pieces");
+        }
+
+        private void getSettingInfoFromXml(XmlDocument i_XmlStateOfGame)
+        {
+            XmlNode XmlNodeBoardSize = i_XmlStateOfGame.SelectSingleNode("LoadGame/GameSettings/BoardSize");
+            m_BoardSize = byte.Parse(XmlNodeBoardSize.InnerText);
+
+            XmlNode XmlNodeGameMode = i_XmlStateOfGame.SelectSingleNode("LoadGame/GameSettings/GameMode");
+            m_GameMode = byte.Parse(XmlNodeGameMode.InnerText);
+            if((eGameMode)m_GameMode == eGameMode.AgainstComputer)
+            {
+                m_IsAgainstComputer = true;
+            }
+
+            XmlNode XmlNodeDifficulty = i_XmlStateOfGame.SelectSingleNode("LoadGame/GameSettings/Difficulty");
+            m_Difficulty = byte.Parse(XmlNodeDifficulty.InnerText);
+
+            XmlNode XmlNodePlayer1Name = i_XmlStateOfGame.SelectSingleNode("LoadGame/GameSettings/Player1Name");
+            m_Player1Name = XmlNodePlayer1Name.InnerText;
+
+            XmlNode XmlNodePlayer2Name = i_XmlStateOfGame.SelectSingleNode("LoadGame/GameSettings/Player2Name");
+            m_Player2Name = XmlNodePlayer2Name.InnerText;
+
+            XmlNode XmlNodeTurn = i_XmlStateOfGame.SelectSingleNode("LoadGame/GameSettings/Turn");
+            m_Turn = XmlNodePlayer1Name.InnerText == "Black" ? Player.eTeam.Black : Player.eTeam.White;
+        }
+
+        private List<Piece> getListOfPiecesFromXml(XmlDocument i_XmlStateOfGame, string i_Player)
+        {
+            string Path = string.Format("LoadGame/GamePanel/{0}", i_Player);
+            Player.eTeam team = i_Player == "Player1Pieces" ? Player.eTeam.Black : Player.eTeam.White;
+
+            XmlNode XmlNodesPlayerPiece = i_XmlStateOfGame.SelectSingleNode(Path);
+            List<Piece> listOfPlayerPieces = new List<Piece>();
+
+            for (int index = 0; index < XmlNodesPlayerPiece.ChildNodes.Count; index += 2)
+            {
+                byte XLocation = byte.Parse(XmlNodesPlayerPiece.ChildNodes[index].InnerText);
+                byte YLocation = byte.Parse(XmlNodesPlayerPiece.ChildNodes[index + 1].InnerText);
+
+                Coordinates currentCoordinateOfPiece = new Coordinates(XLocation, YLocation);
+                Piece currentPiece = new Piece(team, currentCoordinateOfPiece);
+                listOfPlayerPieces.Add(currentPiece);
+            }
+
+            return listOfPlayerPieces;
+        }
+
+        private void PlayerSavedGame()
+        {
+            XmlWriter xmlWriteGameState = XmlWriter.Create("tempSaveXmlFile.xml");
+           
+            xmlWriteGameState.WriteStartDocument();
+            xmlWriteGameState.WriteStartElement("LoadGame");
+
+            // --- Write the settings of the game --- //
+
+            xmlWriteGameState.WriteStartElement("GameSettings");
+            xmlWriteGameState.WriteStartElement("BoardSize");
+            xmlWriteGameState.WriteString(m_BoardSize.ToString());
+            xmlWriteGameState.WriteEndElement();
+            xmlWriteGameState.WriteStartElement("GameMode");
+            xmlWriteGameState.WriteString(m_GameMode.ToString());
+            xmlWriteGameState.WriteEndElement();
+            xmlWriteGameState.WriteStartElement("Difficulty");
+            xmlWriteGameState.WriteString(m_Difficulty.ToString());
+            xmlWriteGameState.WriteEndElement();
+            xmlWriteGameState.WriteStartElement("Player1Name");
+            xmlWriteGameState.WriteString(m_Player1Name);
+            xmlWriteGameState.WriteEndElement();
+            xmlWriteGameState.WriteStartElement("Player2Name");
+            xmlWriteGameState.WriteString(m_Player2Name);
+            xmlWriteGameState.WriteEndElement();
+            xmlWriteGameState.WriteStartElement("Turn");
+            xmlWriteGameState.WriteString(m_OtheloGameLogic.GetCurrentPlayerTurn().Team.ToString());
+            xmlWriteGameState.WriteEndElement();
+            xmlWriteGameState.WriteEndElement(); //end GameSettings
+
+            xmlWriteGameState.WriteStartElement("GamePanel");
+
+            // --- Write the Player1 pieces --- //
+
+            xmlWriteGameState.WriteStartElement("Player1Pieces");
+
+            foreach(Piece CurrentPiece in m_OtheloGameLogic.Player1.Pieces)
+            {
+                xmlWriteGameState.WriteStartElement("X");
+                xmlWriteGameState.WriteString(CurrentPiece.CoordinatesOnBoard.X.ToString());
+                xmlWriteGameState.WriteEndElement();
+                xmlWriteGameState.WriteStartElement("Y");
+                xmlWriteGameState.WriteString(CurrentPiece.CoordinatesOnBoard.Y.ToString());
+                xmlWriteGameState.WriteEndElement();
+            }
+
+            xmlWriteGameState.WriteEndElement(); //end Player1Pieces
+
+            // --- Write the Player2 pieces --- //
+
+            xmlWriteGameState.WriteStartElement("Player2Pieces");
+
+            foreach (Piece CurrentPiece in m_OtheloGameLogic.Player2.Pieces)
+            {
+                xmlWriteGameState.WriteStartElement("X");
+                xmlWriteGameState.WriteString(CurrentPiece.CoordinatesOnBoard.X.ToString());
+                xmlWriteGameState.WriteEndElement();
+                xmlWriteGameState.WriteStartElement("Y");
+                xmlWriteGameState.WriteString(CurrentPiece.CoordinatesOnBoard.Y.ToString());
+                xmlWriteGameState.WriteEndElement();
+            }
+
+            xmlWriteGameState.WriteEndElement(); //end Player2Pieces
+            xmlWriteGameState.WriteEndElement(); //end GamePanel
+            xmlWriteGameState.WriteEndElement(); //end LoadGame
+            xmlWriteGameState.WriteEndDocument();
+            xmlWriteGameState.Close();
+
+            string[] GameState = new string[1];
+            GameState[0] = System.IO.File.ReadAllText("tempSaveXmlFile.xml");
+            File.Delete("tempSaveXmlFile.xml");
+            m_FormOthloGameBoard.SaveGameToFile(GameState);
+        }
+    }
 }

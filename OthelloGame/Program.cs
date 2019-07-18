@@ -5,6 +5,7 @@ namespace Ex02_Othelo
 {
     public class Program
     {
+        [STAThread]
         public static void Main()
         {
             FormOpeningLogo formOpeningLogo = new FormOpeningLogo();

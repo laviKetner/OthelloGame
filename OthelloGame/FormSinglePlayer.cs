@@ -12,9 +12,9 @@ namespace Ex02_Othelo
 {
     public partial class FormSinglePlayer : Form
     {
-        eBoardSize  m_BoardSize   = eBoardSize.Medium;
-        eDifficulty m_Difficulty  = eDifficulty.Medium;
-        string      m_Player1Name = null;
+        private eBoardSize  m_BoardSize   = eBoardSize.Medium;
+        private eDifficulty m_Difficulty  = eDifficulty.Medium;
+        private string      m_Player1Name = null;
 
         public string Player1Name
         {

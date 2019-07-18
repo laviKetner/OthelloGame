@@ -8,14 +8,13 @@ namespace Ex02_Othelo
         private Player.eTeam m_Team;
         private Coordinates m_Coordinates;
 
-        public PiecesPictureBox(Player.eTeam i_Team, Coordinates i_Coordinates)
+        public PiecesPictureBox(Coordinates i_Coordinates)
         {
-            m_Team = i_Team;
             m_Coordinates = i_Coordinates;
 
+            SetImageBackColor();
             setImageLocation();
             setImageLocationOnBoard();
-            SetImageBackColor();
             setImageSize();
             setImageBoardStyle();
         }
@@ -38,13 +37,9 @@ namespace Ex02_Othelo
         public void SetImageBackColor()
         {
             if (m_Coordinates.X % 2 == 0 && m_Coordinates.Y % 2 ==0 || m_Coordinates.X % 2 != 0 && m_Coordinates.Y % 2 != 0) 
-            {
                 BackColor = System.Drawing.Color.FromArgb(0, 255, 0);
-            }
             else
-            {
                 BackColor = System.Drawing.Color.FromArgb(0, 204, 0);
-            }
 
         }
 

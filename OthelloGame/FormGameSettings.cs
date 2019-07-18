@@ -10,16 +10,13 @@ using System.Windows.Forms;
 
 namespace Ex02_Othelo
 {
-    public enum eGameMode : byte
-    {
-        AgainstComputer,
-        AgainstPlayer,
-        AgainstPlayerOnline,
-    }
-   
+
+    public delegate void ClickOnLoadGameEventHandler(string[] i_StringOfstateOfGameToLoad);
+
     public partial class FormGameSettings : Form
     {
-        eGameMode m_GameMode;
+        private eGameMode m_GameMode;
+        public event ClickOnLoadGameEventHandler LoadGame;
 
         public eGameMode GameMode
         {
@@ -49,6 +46,32 @@ namespace Ex02_Othelo
         private void FormGameSettings_FormClosing(object sender, FormClosingEventArgs e)
         {
             Environment.Exit(1);
+        }
+
+        private void LoadGame_button_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog loader = new OpenFileDialog();
+
+            if (loader.ShowDialog() == DialogResult.OK) 
+            {
+                if (System.IO.Path.GetExtension(loader.FileName).Equals(".otlo"))
+                {
+                    string[] filesToOpen = new string[1];
+                    filesToOpen = System.IO.File.ReadAllLines(loader.FileName);
+                    LoadGame.Invoke(filesToOpen);
+                }
+                else
+                {
+                    MessageBox.Show("Unrecognized File");
+                }  
+            }
+            else
+            {
+                System.Diagnostics.Process.Start(Application.ExecutablePath);
+                this.Close(); 
+            }
+
+            FormClosing -= FormGameSettings_FormClosing;
         }
     }
 }
