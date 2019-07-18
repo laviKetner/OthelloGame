@@ -257,7 +257,7 @@ namespace Ex02_Othelo
             m_Player2Name = XmlNodePlayer2Name.InnerText;
 
             XmlNode XmlNodeTurn = i_XmlStateOfGame.SelectSingleNode("LoadGame/GameSettings/Turn");
-            m_Turn = XmlNodePlayer1Name.InnerText == "Black" ? Player.eTeam.Black : Player.eTeam.White;
+            m_Turn = XmlNodeTurn.InnerText == "Black" ? Player.eTeam.Black : Player.eTeam.White;
         }
 
         private List<Piece> getListOfPiecesFromXml(XmlDocument i_XmlStateOfGame, string i_Player)
