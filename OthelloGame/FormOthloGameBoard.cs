@@ -13,7 +13,7 @@ namespace Ex02_Othelo
 {
     public delegate void clickOnPictureBoxEventHandler(Coordinates ClickedCoordinate);
     public delegate void PlayerWantNewRoundEventHandler(bool firstRoundFlag = false);
-    public delegate void PlayerSavedGameEventHandler();
+    public delegate void PlayerSavedGameEventHandler(string fileName);
 
     public partial class FormOthloGameBoard : Form
     {
@@ -256,17 +256,12 @@ Want a new game?", i_Winner.Name);
 
         private void OnSaveGame()
         {
-            SaveGame.Invoke();
-        }
-
-        public void SaveGameToFile(string[] i_GameCurrentPositionOnString)
-        {
             SaveFileDialog saver = new SaveFileDialog();
             DialogResult resultFileDialog = saver.ShowDialog();
             
             if (resultFileDialog == DialogResult.OK)
             {
-                System.IO.File.WriteAllLines(saver.FileName + ".otlo", i_GameCurrentPositionOnString);
+                SaveGame.Invoke(saver.FileName);
             }
         }
 

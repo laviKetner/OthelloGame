@@ -281,9 +281,10 @@ namespace Ex02_Othelo
             return listOfPlayerPieces;
         }
 
-        private void PlayerSavedGame()
+        private void PlayerSavedGame(string i_FileNamePath)
         {
-            XmlWriter xmlWriteGameState = XmlWriter.Create("tempSaveXmlFile.xml");
+            string fileNamePath = i_FileNamePath + ".otlo";
+            XmlWriter xmlWriteGameState = XmlWriter.Create(fileNamePath);
            
             xmlWriteGameState.WriteStartDocument();
             xmlWriteGameState.WriteStartElement("LoadGame");
@@ -314,7 +315,6 @@ namespace Ex02_Othelo
             xmlWriteGameState.WriteStartElement("GamePanel");
 
             // --- Write the Player1 pieces --- //
-
             xmlWriteGameState.WriteStartElement("Player1Pieces");
 
             foreach(Piece CurrentPiece in m_OtheloGameLogic.Player1.Pieces)
@@ -330,7 +330,6 @@ namespace Ex02_Othelo
             xmlWriteGameState.WriteEndElement(); //end Player1Pieces
 
             // --- Write the Player2 pieces --- //
-
             xmlWriteGameState.WriteStartElement("Player2Pieces");
 
             foreach (Piece CurrentPiece in m_OtheloGameLogic.Player2.Pieces)
@@ -348,11 +347,6 @@ namespace Ex02_Othelo
             xmlWriteGameState.WriteEndElement(); //end LoadGame
             xmlWriteGameState.WriteEndDocument();
             xmlWriteGameState.Close();
-
-            string[] GameState = new string[1];
-            GameState[0] = System.IO.File.ReadAllText("tempSaveXmlFile.xml");
-            File.Delete("tempSaveXmlFile.xml");
-            m_FormOthloGameBoard.SaveGameToFile(GameState);
         }
     }
 }
