@@ -2,7 +2,7 @@
 Write in C# using winform interface.
 
 ## The Rules:
-Othello is a strategy board game for two players, played on an board. There are pieces called disks (often just pieces), which are light on one side and dark on the other. Players take turns placing disks on the board with their assigned color facing up. During a play, any piece of the opponent's color that are in a straight line and bounded by the piece just placed and another piece of the current player's color are turned over to the current player's color.
+Othello is a strategy board game for two players, played on an board. There are pieces called disks (often just pieces), which are light on one side and dark on the other. Players take turns placing piece on the board with their assigned color facing up. During a play, any piece of the opponent's color that are in a straight line and bounded by the piece just placed and another piece of the current player's color are turned over to the current player's color.
 The target of the game is to have the majority of disks/pieces turned to display your color when the last playable empty square is filled.
 
 ## Play mode:
