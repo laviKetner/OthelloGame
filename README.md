@@ -12,9 +12,9 @@ The target of the game is to have the majority of disks/pieces turned to display
 
 ## Load / Save game:
 If you want to exit the game during the play, the application will ask you if you want to save the game.
-In the first window the user see, he can choose to load the game he save.
+When user enter the app, he can choose to load the game he saved.
 The app uses xml file to save the game status.
-The files are saved as .otlo type, and the game can loaded only this type of file. 
+The files are saved as .otlo type, and the app can loaded only this type of files. 
 
 ## AI
 If you choose the Single Play mode, you will ask to choose the difficulty of the game:
