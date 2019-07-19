@@ -38,7 +38,7 @@ namespace Ex02_Othelo
         private Player         m_Player2;
         private Player         m_Winner = null;
         private List<Piece>[,] m_ChangeTeamPieces;
-        private Player.eTeam   m_Turn = Player.eTeam.Black;
+        private Player.eTeam   m_Turn;
         private eDifficulty    m_Difficulty;
 
         public event AddedPieceOnBoardEventHandler PieceAddedOnBoard;
@@ -80,7 +80,7 @@ namespace Ex02_Othelo
         //--------------------------------------------------------------------------------------//
         //                              Run Game - Constractur                                  //
         //--------------------------------------------------------------------------------------//
-        public OtheloGameLogic(byte i_BoardSize, string i_Player1Name, string i_Player2Name, bool i_IsPlayer2IsComputer, Player.eTeam i_Turn, eDifficulty i_Difficulty = eDifficulty.Empty_AgainstHuman)
+        public OtheloGameLogic(byte i_BoardSize, string i_Player1Name, string i_Player2Name, bool i_IsPlayer2IsComputer, Player.eTeam i_Turn = Player.eTeam.Black, eDifficulty i_Difficulty = eDifficulty.Empty_AgainstHuman)
         {
             const bool v_Player1IsAlwaysNotComputer = false;
             m_Difficulty = i_Difficulty;
@@ -94,7 +94,7 @@ namespace Ex02_Othelo
         //--------------------------------------------------------------------------------------//
         //                              Initialize Function                                     //
         //--------------------------------------------------------------------------------------//
-        public void InitializeGame(bool i_LoadedGame, List<Piece> i_ListOfPlayer1Pieces, List<Piece> i_ListOfPlayer2Pieces)
+        public void RunLogicGame(bool i_LoadedGame, List<Piece> i_ListOfPlayer1Pieces, List<Piece> i_ListOfPlayer2Pieces)
         {
             if (i_LoadedGame == false)
             {

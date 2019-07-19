@@ -41,12 +41,12 @@ namespace Ex02_Othelo
         private OtheloGameLogic    m_OtheloGameLogic;
         private byte               m_BoardSize;
         private byte               m_GameMode;
-        private string             m_Player1Name = null;
+        private string             m_Player1Name ;
         private string             m_Player2Name = "Computer";
         private bool               m_IsAgainstComputer = false;
         private byte               m_Difficulty;
         private bool               m_LoadedGame = false;
-        private Player.eTeam       m_Turn = Player.eTeam.Black;
+        private Player.eTeam       m_Turn;
 
         private List<Piece>        m_ListOfPlayer1Pieces; //Incase of loaded game we need to load this lists and bring them to GameLogic
         private List<Piece>        m_ListOfPlayer2Pieces; //Incase of loaded game we need to load this lists and bring them to GameLogic
@@ -64,64 +64,96 @@ namespace Ex02_Othelo
         {
             if (i_IsFirstRoundFlag)
             {
-                m_FormGameSettings = new FormGameSettings();
-                m_FormGameSettings.LoadGame += loadGame;
-                m_FormGameSettings.ShowDialog();
+                showGameSettingForm();
 
                 if (m_LoadedGame == false)
                 {
                     m_GameMode = (byte)m_FormGameSettings.GameMode;
-                    switch ((eGameMode)m_GameMode)
-                    {
-                        case eGameMode.AgainstComputer:
-                            {
-                                FormSinglePlayer formSinglePlayer = new FormSinglePlayer();
-                                formSinglePlayer.ShowDialog();
-                                m_Player1Name = formSinglePlayer.Player1Name;
-                                m_BoardSize = (byte)formSinglePlayer.BoardSize;
-                                m_Difficulty = (byte)formSinglePlayer.Difficulty;
-                                m_IsAgainstComputer = true;
-                                break;
-                            }
-                        case eGameMode.AgainstPlayer:
-                            {
-                                FormTwoPlayers formTwoPlayer = new FormTwoPlayers();
-                                formTwoPlayer.ShowDialog();
-                                m_Player1Name = formTwoPlayer.Player1Name;
-                                m_Player2Name = formTwoPlayer.Player2Name;
-                                m_BoardSize = (byte)formTwoPlayer.BoardSize;
-                                break;
-                            }
-                        case eGameMode.AgainstPlayerOnline:
-                            {
-                                FormPlayOnline formPlayOnline = new FormPlayOnline();
-                                formPlayOnline.ShowDialog();
-                                break;
-                            }
-                    }
+                    openGameModeFormAndGetInitializeInfo();
                 }
             }
 
-            //initializeGameLogic
-            m_OtheloGameLogic = new OtheloGameLogic(m_BoardSize, m_Player1Name, m_Player2Name, m_IsAgainstComputer, m_Turn, (eDifficulty)m_Difficulty);
-            m_OtheloGameLogic.ValidMovesCoordinateChange += sendToFormOthloGameBoardTheCurrentValidMovesCoordinate;
-            m_OtheloGameLogic.PieceAddedOnBoard += pieceAddedOnBoard;
-            m_OtheloGameLogic.CellsChangedTeam += cellsChangedTeam;
+            initializeGameLogic();
+            initializeGameBoard();//UI
+            startPlaying();
+        }
 
-            //initializeGameUI
+        private void initializeGameBoard()
+        {
             m_FormOthloGameBoard = new FormOthloGameBoard(m_BoardSize, m_Player1Name, m_Player2Name, m_LoadedGame, m_ListOfPlayer1Pieces, m_ListOfPlayer2Pieces);
             m_FormOthloGameBoard.NewRound += initializeGame;
             m_FormOthloGameBoard.PlayerMakeAMove += doPlayersMove;
             m_FormOthloGameBoard.SaveGame += PlayerSavedGame;
+        }
 
-            m_OtheloGameLogic.InitializeGame(m_LoadedGame, m_ListOfPlayer1Pieces, m_ListOfPlayer2Pieces);
-            m_LoadedGame = false;
-            startPlaying();         
+        private void initializeGameLogic()
+        {
+            m_OtheloGameLogic = new OtheloGameLogic(m_BoardSize, m_Player1Name, m_Player2Name, m_IsAgainstComputer, m_Turn, (eDifficulty)m_Difficulty);
+            m_OtheloGameLogic.ValidMovesCoordinateChange += sendToFormOthloGameBoardTheCurrentValidMovesCoordinate;
+            m_OtheloGameLogic.PieceAddedOnBoard += pieceAddedOnBoard;
+            m_OtheloGameLogic.CellsChangedTeam += cellsChangedTeam;
+        }
+
+        private void openGameModeFormAndGetInitializeInfo()
+        {
+            switch ((eGameMode)m_GameMode)
+            {
+                case eGameMode.AgainstComputer:
+                    {
+                        FormSinglePlayer formSinglePlayer = new FormSinglePlayer();
+                        formSinglePlayer.ShowDialog();
+                        m_Player1Name = formSinglePlayer.Player1Name;
+                        m_BoardSize = (byte)formSinglePlayer.BoardSize;
+                        m_Difficulty = (byte)formSinglePlayer.Difficulty;
+                        m_IsAgainstComputer = true;
+                        break;
+                    }
+                case eGameMode.AgainstPlayer:
+                    {
+                        FormTwoPlayers formTwoPlayer = new FormTwoPlayers();
+                        formTwoPlayer.ShowDialog();
+                        m_Player1Name = formTwoPlayer.Player1Name;
+                        m_Player2Name = formTwoPlayer.Player2Name;
+                        m_BoardSize = (byte)formTwoPlayer.BoardSize;
+                        break;
+                    }
+                case eGameMode.AgainstPlayerOnline:
+                    {
+                        FormPlayOnline formPlayOnline = new FormPlayOnline();
+                        formPlayOnline.ShowDialog();
+                        break;
+                    }
+            }
+        }
+
+        private void showGameSettingForm()
+        {
+            bool isUserChooseCorrectSettings = false;
+
+            while (!isUserChooseCorrectSettings)
+            {
+                try
+                {
+                    m_FormGameSettings = new FormGameSettings();
+                    m_FormGameSettings.LoadGame += loadGame;
+                    m_FormGameSettings.ShowDialog();
+                    isUserChooseCorrectSettings = true;
+                }
+                catch
+                {
+                    isUserChooseCorrectSettings = false;
+                }
+            }
         }
 
         private void startPlaying()
         {
-            m_FormOthloGameBoard.ShowDialog();
+            // ---- Run Logic game ---- //
+            m_OtheloGameLogic.RunLogicGame(m_LoadedGame, m_ListOfPlayer1Pieces, m_ListOfPlayer2Pieces);
+            m_LoadedGame = false;
+
+            // ---- Run UI game ---- //
+            m_FormOthloGameBoard.ShowDialog(); 
         }
 
         //--------------------------------------------------------------------------------------//

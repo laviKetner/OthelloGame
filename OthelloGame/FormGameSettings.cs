@@ -63,12 +63,13 @@ namespace Ex02_Othelo
                 else
                 {
                     MessageBox.Show("Unrecognized File");
+                    throw new Exception();
                 }  
             }
             else
             {
-                System.Diagnostics.Process.Start(Application.ExecutablePath);
-                this.Close(); 
+                //System.Diagnostics.Process.Start(Application.ExecutablePath);
+                throw new Exception();
             }
 
             FormClosing -= FormGameSettings_FormClosing;

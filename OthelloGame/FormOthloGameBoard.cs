@@ -21,11 +21,12 @@ namespace Ex02_Othelo
         //                                   Data Members                                       //
         //--------------------------------------------------------------------------------------//
 
-        private PiecesPictureBox[,] m_ImageOnBoard;
-        private Label               m_Player1LabelScore;
-        private Label               m_Player2LabelScore;
-        private Label               m_PlayerTurnLabel;
-        private PictureBox          m_PlayerTurnPictureBox;
+        private PiecesPictureBox[,]    m_ImageOnBoard;
+        private Label                  m_Player1LabelScore;
+        private Label                  m_Player2LabelScore;
+        private Label                  m_PlayerTurnLabel;
+        private PictureBox             m_PlayerTurnPictureBox;
+        private List<PiecesPictureBox> m_PossibleMovesFormLastRound;
 
         public event clickOnPictureBoxEventHandler  PlayerMakeAMove;
         public event PlayerWantNewRoundEventHandler NewRound;
@@ -168,12 +169,15 @@ namespace Ex02_Othelo
         {
             if (!i_IsAgainstComputer || i_PlayerTurn.Team == Player.eTeam.Black)  
             {
+                m_PossibleMovesFormLastRound = new List<PiecesPictureBox>(i_ValidMoveCoordinate.Count);
+
                 foreach (Coordinates currectCoordinate in i_ValidMoveCoordinate)
                 {
                     m_ImageOnBoard[currectCoordinate.X, currectCoordinate.Y].BackColor = System.Drawing.Color.LightGray;
                     m_ImageOnBoard[currectCoordinate.X, currectCoordinate.Y].BorderStyle = BorderStyle.Fixed3D;
                     m_ImageOnBoard[currectCoordinate.X, currectCoordinate.Y].Click += PlayerClickedImagedOnBoard;
                     m_ImageOnBoard[currectCoordinate.X, currectCoordinate.Y].Cursor = Cursors.Hand;
+                    m_PossibleMovesFormLastRound.Add(m_ImageOnBoard[currectCoordinate.X, currectCoordinate.Y]);
                 }
             }
         }
@@ -184,7 +188,7 @@ namespace Ex02_Othelo
             byte YCoordinate = i_NewPieceOnBoard.CoordinatesOnBoard.Y;
             m_ImageOnBoard[XCoordinate, YCoordinate].Team = i_NewPieceOnBoard.Team;
 
-            foreach (PiecesPictureBox currectPiecesPictureBox in m_ImageOnBoard)
+            foreach (PiecesPictureBox currectPiecesPictureBox in m_PossibleMovesFormLastRound)
             {
                 currectPiecesPictureBox.SetImageBackColor();
                 currectPiecesPictureBox.BorderStyle = BorderStyle.None;
