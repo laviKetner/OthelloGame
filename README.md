@@ -6,7 +6,7 @@ Othello is a strategy board game for two players, played on an board. There are 
 The target of the game is to have the majority of disks/pieces turned to display your color when the last playable empty square is filled.
 
 ## Play mode:
-* Human VS Human - Two player
+* Human VS Human - Two players
 * Human VS AI    - Single player
 * Online         - Play against human online
 
